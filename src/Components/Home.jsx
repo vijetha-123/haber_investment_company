@@ -3,6 +3,11 @@ import img from '../Assets/home.jpg';
 import Cards from "./Cards";
 import  Card  from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import Contactform from "./Contactform";
+import axios from "axios";
+import { useEffect,useState } from "react";
+import Carousel from 'react-bootstrap/Carousel';
+
 import { createUseStyles } from "react-jss";
 const section3styles=createUseStyles({
   img:{
@@ -14,14 +19,30 @@ const section3styles=createUseStyles({
     paddingLeft:250,
     paddingTop:50,
     paddingBottom:50
-    
   }
-
 })
+
 export default function Home(){
+  
     return(
-        <div>
-        <div id="carouselExampleCaptions" className="carousel slide" data-bs-ride="carousel">
+        <div >
+          <Carousel  >
+      <Carousel.Item style={{height:400}}>
+        <img
+          className="d-block w-100"
+          src={img}
+          alt="First slide"
+          
+        />
+        <Carousel.Caption style={{backgroundColor: "white",color:"black"}}>
+          <h4>WE MEET YOUR FINANCIAL</h4>
+          <h5>INVESTMENT NEEDS</h5>
+        </Carousel.Caption>
+      </Carousel.Item>
+      
+      
+    </Carousel>
+        {/* <div id="carouselExampleCaptions" className="carousel slide" data-bs-ride="carousel">
   <div className="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -44,7 +65,7 @@ export default function Home(){
     <span className="carousel-control-next-icon" aria-hidden="true"></span>
     <span className="visually-hidden">Next</span>
   </button>
-  </div>
+  </div> */}
   <br></br>
  <br></br>
   <h2 style={{textAlign:"center"}}>OUR FOCUS IS OUR CLIENTS SUCCESS</h2>
@@ -59,7 +80,27 @@ export default function Home(){
 </div>
     )
 }
-function Section1(){
+
+const Section1 =() =>{
+    const [data, setData] = useState([])
+    useEffect(() => {
+    
+      fetchdata()
+    }, [])
+    const fetchdata = async () => {
+      //https://localhost:7126/api/Registrations
+      const response = await axios.get("https://localhost:7281/api/Cards");
+      setData(response.data)
+    }
+
+  //use Axios
+//   const { data, error, loading } = useAxios({
+//     url: "https://localhost:7281/api/Cards"
+// })
+
+// if (loading||!data) return "Loading......";
+// if(error) return "Error loading data";
+
 return(
   <div style={{backgroundColor:'lightgrey',height:650,width:1263,marginTop:300}}>
     <br></br><br></br>
@@ -83,30 +124,37 @@ return(
   <Card style={{ width: '18rem',height:400 }}>
       <Card.Img variant="top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFV7oB0DZRxy8MKRfyYOtwRBzxpDCGXZeUaQ&usqp=CAU" style={{padding:10,height:200}}/>
       <Card.Body>
-        <Card.Title>Our focus</Card.Title>
-        <Card.Text>
+      <Card.Title>Our focus</Card.Title>
+      <Card.Text>
         Our intrinsic understanding of critical sectors has led to time-tested results in driving success. 
-        </Card.Text>
+      </Card.Text>
         <Button variant="primary" style={{marginTop:25}}>Go somewhere</Button>
       </Card.Body>
     </Card>
     </div>
-    <div className="col col-3" style={{marginLeft:60}}>
+    <div className="col col-3" style={{marginLeft:60}}>   
+    
   <Card style={{ width: '18rem',height:400 }}>
       <Card.Img variant="top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkcVFSiwWxyytq4eFohlihqpEjOccIzwd-RA&usqp=CAU" style={{padding:10,height:200}}/>
       <Card.Body>
-        <Card.Title>Our Approach</Card.Title>
-        <Card.Text>
-        Bring backup. Investment banks are supposed to advise you on big deals.
-        </Card.Text>
+ {data.map(x => (  
+        <div>
+        <Card.Title>{x.title}</Card.Title>
+        <Card.Text>{x.descriptions} </Card.Text>
         <Button variant="primary"style={{marginTop:20}}>Go somewhere</Button>
+        </div>
+         ))} 
+        
       </Card.Body>
     </Card>
+   
     </div>
     </div>
     </div>
 )
 }
+
+
 function Section2(){
   return(
     <div className="row" style={{height:300}}>
@@ -155,8 +203,9 @@ function Section3(){
 }
 function Section4(){
   return(
-    <div>
-      <img style={{width:1260,height:300,zIndex:99999}} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkwJTi5F3Y5dBaImT58LZwv_Yx4G8GMazuWg&usqp=CAU"></img>
+    <div  >
+      {/* <img style={{width:1260,height:300,zIndex:99999,}} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkwJTi5F3Y5dBaImT58LZwv_Yx4G8GMazuWg&usqp=CAU"></img> */}
+    <Contactform/>
     </div>
   )
 }
@@ -190,19 +239,19 @@ function Section6(){
             <div className='row'>
                 <div className='col col-6'>
                     <div className='row'>
-                        <p>
+                        <div>
                         <h4 style={{ float: 'left', color: 'white',paddingRight:5 }}>HABER </h4>
                         <p style={{ textSize: 5, float: 'left', marginLeft: 5, color: 'white' }}> &copy;2015 privacy policy</p>
-                        </p>
+                        </div>
                     </div>
                     <div className='row'>
-                        <p>
-                            <i style={{ color: '#f85422', padding: 5, float: 'left' }} class="fa-brands fa-square-twitter fa-2x"></i>
-                            <i style={{ color: '#f85422', padding: 5, float: 'left' }} class="fa-brands fa-square-youtube fa-2x"></i>
-                            <i style={{ color: '#f85422', padding: 5, float: 'left' }} class="fa-solid fa-wifi fa-2x"></i>
-                            <i style={{ color: '#f85422', padding: 5, float: 'left' }} class="fa-brands fa-square-facebook fa-2x"></i>
-                            <i style={{ color: '#f85422', padding: 5, float: 'left' }} class="fa-brands fa-square-google-plus fa-2x"></i>
-                        </p>
+                        <div>
+                            <i style={{ color: '#f85422', padding: 5, float: 'left' }} className="fa-brands fa-square-twitter fa-2x"></i>
+                            <i style={{ color: '#f85422', padding: 5, float: 'left' }} className="fa-brands fa-square-youtube fa-2x"></i>
+                            <i style={{ color: '#f85422', padding: 5, float: 'left' }} className="fa-solid fa-wifi fa-2x"></i>
+                            <i style={{ color: '#f85422', padding: 5, float: 'left' }} className="fa-brands fa-square-facebook fa-2x"></i>
+                            <i style={{ color: '#f85422', padding: 5, float: 'left' }} className="fa-brands fa-square-google-plus fa-2x"></i>
+                        </div>
                     </div>
                 </div>
                 <div className='col col-6'>
@@ -211,4 +260,4 @@ function Section6(){
             </div>
         </div>
   )
-}
+  }
